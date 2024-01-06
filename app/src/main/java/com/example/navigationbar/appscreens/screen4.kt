@@ -1,6 +1,7 @@
 package com.example.navigationbar.appscreens
 
 import android.content.Context
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -54,6 +55,7 @@ import com.example.navigationbar.R
 import com.example.navigationbar.database.MonitoringProductsTable
 import com.example.navigationbar.database.ProductEvents
 import com.example.navigationbar.database.ProductsDatabase
+import com.example.navigationbar.navigationsystem.Screen
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -75,7 +77,7 @@ fun Screen4(
                 .weight(1f)
         ) {
             Button(
-                onClick = { navHostController.popBackStack() },
+                onClick = { navHostController.popBackStack(route = Screen.S3.route,inclusive = true) },
                 shape = RoundedCornerShape(8.dp),
             ) {
                 Icon(
@@ -189,9 +191,12 @@ fun Screen4(
                             modifier = Modifier.weight(1f),
                             placeholder = { Text("Enter Expected Price") }
                         )
+                        val context= LocalContext.current
                         Button(
+
                             onClick = {screen4ViewModel.uiState.value.productePrice=expected
                                 screen4ViewModel.onEvent()
+                                Toast.makeText(context,"Iteam has been Added" , Toast.LENGTH_SHORT).show()
                                  },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(8.dp)

@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.navigationbar.appscreens.Screen1
 import com.example.navigationbar.appscreens.Screen3
+import com.example.navigationbar.appscreens.Screen3ViewModel
 import com.example.navigationbar.appscreens.Screen4
 import com.example.navigationbar.appscreens.Screen4ViewModel
 import com.example.navigationbar.appscreens.Screen5
@@ -19,7 +20,8 @@ import com.example.navigationbar.appscreens.WebViewScreen
 fun SetupNavigation(
     navHostController: NavHostController,
     modifier: Modifier,
-    viewModel:Screen4ViewModel
+    viewModel:Screen4ViewModel,
+    viewModel1: Screen3ViewModel
 ) {
     NavHost(navController = navHostController, startDestination = Screen.S1.route) {
         composable(route = Screen.S1.route) {
@@ -29,7 +31,7 @@ fun SetupNavigation(
             Screen5(Modifier, navHostController)
         }
         composable(route = Screen.S3.route) {
-            Screen3(Modifier, navHostController)
+            Screen3(Modifier, navHostController,viewModel1)
         }
         composable(
             route = "product/{my_param}",
@@ -50,6 +52,21 @@ fun SetupNavigation(
                 navHostController,
                 "https://www.flipkart.com/?affid=affveve&affExtParam1=13bdae52e5586f9f690c4763bde90aa9&affExtParam2=99399"
             )
+        }
+        composable(
+            route = "sch/{my_param}",
+            arguments = listOf(
+                navArgument("my_param") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val param = it.arguments?.getString("my_param") ?: ""
+            WebViewScreen(
+                navHostController,
+                "https://www.flipkart.com/search?q=${param}"
+            )
+
         }
 
     }

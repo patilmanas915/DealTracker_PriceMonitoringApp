@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
@@ -53,7 +54,7 @@ fun WebViewScreen(navHostController:NavHostController,url:String) {
                 Button(onClick = {
                     val currentUrl = webView.url ?: ""
                     val encodedUrl = Uri.encode(currentUrl)
-                    navHostController.navigate("product/$encodedUrl")
+                    navHostController.navigate("product/$encodedUrl",navOptions = NavOptions.Builder().setLaunchSingleTop(true).build())
 
 
                 }) {

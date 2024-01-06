@@ -17,5 +17,5 @@ interface MonitoringProductsTableDao {
     suspend fun deleteProduct(monitoringProductsTable: MonitoringProductsTable)
 
     @Query("SELECT * FROM PRODUCTS")
-     fun getProduct(): LiveData<List<MonitoringProductsTable>>
+     fun getProduct(): Flow<List<MonitoringProductsTable>>
 }

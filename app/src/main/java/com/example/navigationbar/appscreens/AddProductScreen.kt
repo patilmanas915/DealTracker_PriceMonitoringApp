@@ -18,6 +18,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,14 +36,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 
 @Composable
-fun Screen5(modifier: Modifier,navHostController: NavHostController) {
+fun Screen5(modifier: Modifier, navHostController: NavHostController) {
     val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.search))
+    var searchQuery by remember { mutableStateOf("") }
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -52,7 +57,7 @@ fun Screen5(modifier: Modifier,navHostController: NavHostController) {
                 .weight(1f)
         ) {
             Button(
-                onClick = { navHostController.popBackStack()},
+                onClick = { navHostController.popBackStack() },
                 shape = RoundedCornerShape(8.dp),
             ) {
                 Icon(
@@ -100,11 +105,16 @@ fun Screen5(modifier: Modifier,navHostController: NavHostController) {
                 fontWeight = FontWeight(100)
             )
             Text(
-                text = "Enter URL To Start Tracking", color = Color.White,
+                text = "Enter Products for Tacking", color = Color.White,
                 textAlign = TextAlign.Center,
                 fontFamily = FontFamily(Font(R.font.poppins))
             )
-            SearchBar(Modifier.padding(8.dp))
+            SearchBar(
+                Modifier.padding(8.dp), onSearch = { query ->
+                    searchQuery = query
+                    navHostController.navigate("sch/${searchQuery}",navOptions = NavOptions.Builder().setLaunchSingleTop(true).build())
+                }, navHostController = navHostController
+            )
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -115,7 +125,10 @@ fun Screen5(modifier: Modifier,navHostController: NavHostController) {
                     .fillMaxWidth()
                     .padding(12.dp), horizontalArrangement = Arrangement.Center
             ) {
-                Surface(onClick = { navHostController.navigate("web1") }, shape = RoundedCornerShape(12.dp)) {
+                Surface(
+                    onClick = { navHostController.navigate("web1",navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()) },
+                    shape = RoundedCornerShape(12.dp)
+                ) {
                     Image(
                         painter = painterResource(id = R.drawable.amazon),
                         contentDescription = null,
@@ -127,7 +140,10 @@ fun Screen5(modifier: Modifier,navHostController: NavHostController) {
 
                 Spacer(modifier = Modifier.padding(12.dp))
 
-                Surface(onClick = { navHostController.navigate("web2") }, shape = RoundedCornerShape(12.dp)) {
+                Surface(
+                    onClick = { navHostController.navigate("web2",navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()) },
+                    shape = RoundedCornerShape(12.dp)
+                ) {
                     Image(
                         painter = painterResource(id = R.drawable.flipkart),
                         contentDescription = null,
@@ -148,7 +164,7 @@ fun Screen5(modifier: Modifier,navHostController: NavHostController) {
         }
 
         Surface(modifier.padding(8.dp), color = Color.Transparent) {
-            NavBar(modifier.weight(7f),navHostController)
+            NavBar(modifier.weight(7f), navHostController)
         }
     }
 }

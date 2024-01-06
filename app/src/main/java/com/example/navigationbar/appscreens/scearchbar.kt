@@ -15,6 +15,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -34,13 +35,15 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.input.ImeAction
+import androidx.navigation.NavHostController
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
     onSearch: (String) -> Unit = {},
-    onCancel: () -> Unit = {}
+    onCancel: () -> Unit = {},
+    navHostController: NavHostController
 ) {
     var query by remember { mutableStateOf("") }
     var isFocused by remember { mutableStateOf(false) }
@@ -80,7 +83,6 @@ fun SearchBar(
                 value = query,
                 onValueChange = {
                     query = it
-                    onSearch(it)
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Search

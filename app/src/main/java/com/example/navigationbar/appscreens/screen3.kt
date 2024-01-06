@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Button
@@ -24,9 +25,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -37,12 +42,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.example.navigationbar.R
+import com.example.navigationbar.database.MonitoringProductsTable
 import com.example.navigationbar.ui.theme.NavigationbarTheme
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Screen3(modifier: Modifier = Modifier, navHostController: NavHostController) {
+fun Screen3(
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController,
+    screen3ViewModel: Screen3ViewModel
+) {
+    val listofproduct by screen3ViewModel.listOfProduct.collectAsState()
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -56,7 +69,7 @@ fun Screen3(modifier: Modifier = Modifier, navHostController: NavHostController)
                     .weight(1f)
             ) {
                 Button(
-                    onClick = { navHostController.popBackStack()},
+                    onClick = { navHostController.popBackStack() },
                     shape = RoundedCornerShape(8.dp),
                 ) {
                     Icon(
@@ -87,15 +100,42 @@ fun Screen3(modifier: Modifier = Modifier, navHostController: NavHostController)
         Surface(
             modifier
                 .fillMaxSize()
-                .weight(18f), color = Color.Transparent){
-            LazyColumn(){
-                val info= listOf("adsfl;jasdf","alsdfjlk","aklsfjasd","alsdfjlk","aklsfjasd","alsdfjlk","adsfl;jasdf","alsdfjlk","aklsfjasd","alsdfjlk","aklsfjasd","alsdfjlk")
-                itemsIndexed(info) { index, hero ->
+                .weight(18f), color = Color.Transparent
+        ) {
+            LazyColumn() {
+                itemsIndexed(listofproduct ?: emptyList()) { index, hero ->
                     Itemsfor(
-                        txt = hero,
+                        monitoringProductsTable = hero,
+                        screen3ViewModel,
                         modifier = Modifier
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                     )
+                }
+                item {
+
+                    Card(
+                        onClick = { navHostController.navigate(com.example.navigationbar.navigationsystem.Screen.S2.route) },
+                        modifier
+                            .fillMaxSize()
+                            .padding(8.dp)) {
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.AddCircle, contentDescription = null,
+                                Modifier
+                                    .fillMaxWidth()
+                                    .size(60.dp)
+                            )
+
+
+                        }
+
+                    }
                 }
             }
 
@@ -104,7 +144,7 @@ fun Screen3(modifier: Modifier = Modifier, navHostController: NavHostController)
 
 
         Surface(modifier.padding(8.dp), color = Color.Transparent) {
-            NavBar(modifier.weight(7f),navHostController)
+            NavBar(modifier.weight(7f), navHostController)
         }
     }
 }
@@ -112,19 +152,32 @@ fun Screen3(modifier: Modifier = Modifier, navHostController: NavHostController)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Itemsfor(modifier: Modifier=Modifier,txt:String){
-    Card(modifier = Modifier
-        .fillMaxSize()
-        .padding(8.dp)) {
+fun Itemsfor(
+    monitoringProductsTable: MonitoringProductsTable,
+    screen3ViewModel: Screen3ViewModel,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(8.dp)
+    ) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-            Icon(imageVector = Icons.Default.AccountCircle, contentDescription =null,modifier.size(100.dp) )
+            AsyncImage(
+                model = monitoringProductsTable.productImg,
+                contentDescription = null,
+                modifier.size(100.dp).weight(1.8f)
+            )
 
-            Column {
-                Text(text = "Current Price: 40000")
-                Text(text = "Expected Price: 5000")
+            Column(modifier.weight(4f)) {
+                Text(text = "Current Price: ${monitoringProductsTable.currentPrice}")
+                Text(text = "Expected Price: ${monitoringProductsTable.expectedPrice}")
             }
-            IconButton(onClick = {},modifier.weight(1f)){
-                Icon(imageVector = Icons.Default.Close, contentDescription =null)
+            IconButton(onClick = {
+                                 screen3ViewModel.removeProduct(monitoringProductsTable)
+
+            }, modifier.weight(1f)) {
+                Icon(imageVector = Icons.Default.Close, contentDescription = null)
             }
         }
 
@@ -145,7 +198,7 @@ fun GreePreview() {
                     .align(Alignment.Center)
             )
         }
-        Screen3(navHostController =navController )
+        //Screen3(navHostController =navController )
 
     }
 }

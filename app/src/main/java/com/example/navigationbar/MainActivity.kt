@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
+import com.example.navigationbar.appscreens.Screen3ViewModel
 import com.example.navigationbar.appscreens.Screen4ViewModel
 import com.example.navigationbar.database.MonitoringProductsTable
 import com.example.navigationbar.database.ProductsDatabase
@@ -52,6 +53,16 @@ class MainActivity : ComponentActivity() {
 
             }
         )
+        val viewModel1 by viewModels<Screen3ViewModel>(
+            factoryProducer = {
+                object : ViewModelProvider.Factory{
+                    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                        return Screen3ViewModel(db.dao) as T
+                    }
+                }
+
+            }
+        )
 
 
         setContent {
@@ -60,7 +71,7 @@ class MainActivity : ComponentActivity() {
 
             NavigationbarTheme {
                 navController = rememberNavController()
-                SetupNavigation(navHostController = navController, Modifier,viewModel)
+                SetupNavigation(navHostController = navController, Modifier,viewModel,viewModel1)
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -78,7 +89,7 @@ class MainActivity : ComponentActivity() {
                         )
 
 
-                    SetupNavigation(navHostController = navController, modifier = Modifier,viewModel)
+                    SetupNavigation(navHostController = navController, modifier = Modifier,viewModel,viewModel1)
 
 
 

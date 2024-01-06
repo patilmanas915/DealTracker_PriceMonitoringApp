@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import com.example.navigationbar.navigationsystem.Screen
 
 @Composable
@@ -28,7 +29,7 @@ fun NavBar(modifier: Modifier = Modifier, navHostController: NavHostController) 
 
         Row() {
             IconButton(
-                onClick = { navHostController.navigate(Screen.S1.route) },
+                onClick = { navHostController.navigate(Screen.S1.route,navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()) },
                 Modifier.weight(1f)
             ) {
                 Icon(
@@ -40,7 +41,7 @@ fun NavBar(modifier: Modifier = Modifier, navHostController: NavHostController) 
 
             }
             IconButton(
-                onClick = { navHostController.navigate(Screen.S2.route) },
+                onClick = { navHostController.navigate(Screen.S2.route,navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()) },
                 Modifier.weight(1f)
             ) {
                 Icon(
@@ -54,7 +55,7 @@ fun NavBar(modifier: Modifier = Modifier, navHostController: NavHostController) 
             }
             IconButton(
                 onClick = {
-                    navHostController.navigate(Screen.S3.route)
+                    navHostController.navigate(Screen.S3.route,navOptions = NavOptions.Builder().setLaunchSingleTop(true).build())
                 },
                 Modifier.weight(1f)
             ) {
