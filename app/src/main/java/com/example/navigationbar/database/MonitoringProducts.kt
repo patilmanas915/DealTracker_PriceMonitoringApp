@@ -11,6 +11,6 @@ data class MonitoringProductsTable(
     val productName:String,
     val productImg:String,
     val productUrl: String,
-    val currentPrice: String,
+    var currentPrice: String,
     val expectedPrice:String
 )

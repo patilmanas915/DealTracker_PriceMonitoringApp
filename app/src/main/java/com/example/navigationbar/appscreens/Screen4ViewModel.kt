@@ -49,6 +49,8 @@ class Screen4ViewModel(
                 val jsonObject = JSONObject(result)
                 val imageUrl = jsonObject.getString("images")
                 val price = jsonObject.getString("price")
+                val regex = Regex("[^0-9.]")
+                val numericPrice = regex.replace(price, "")
                 val title = jsonObject.getString("name")
                 var description: String = ""
                 if (jsonObject.has("about_item")) {
@@ -61,7 +63,7 @@ class Screen4ViewModel(
                 _uiState.value = ProductState(
                     productName = title,
                     productImgUrl = imageUrl,
-                    productcPrice = price,
+                    productcPrice = numericPrice,
                     productDescription = description,
                     productUrl = url
                 )

@@ -39,3 +39,21 @@ suspend fun callApi(link: String, product: String = "/scrape?url="): String? {
     }
 }
 
+
+fun main() {
+    runBlocking {
+        launch(Dispatchers.IO) {
+            try {
+                val response = callApi("SMSSPRODUCT", "/smss_product?url=")
+                print(response)
+            } catch (e: Exception) {
+                // Handle exceptions here
+                e.printStackTrace()
+            }
+        }
+    }
+}
+
+
+
+
