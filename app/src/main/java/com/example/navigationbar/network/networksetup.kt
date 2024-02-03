@@ -45,7 +45,7 @@ fun main() {
         launch(Dispatchers.IO) {
             try {
                 val response = callApi("SMSSPRODUCT", "/smss_product?url=")
-                print(response)
+                //print(response)
             } catch (e: Exception) {
                 // Handle exceptions here
                 e.printStackTrace()

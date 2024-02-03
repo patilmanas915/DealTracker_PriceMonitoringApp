@@ -27,11 +27,11 @@ class ProductWorker(
 ) : CoroutineWorker(ctx, parameters) {
 
     override suspend fun doWork(): Result {
+        println("running")
          val db by lazy {
             Room.databaseBuilder(applicationContext, ProductsDatabase::class.java, "products.db")
                 .build()
         }
-        makeStatusNotification("Tracking is started", applicationContext)
         return try {
             val productDao = db.dao
             val allProducts = productDao.getProduct().first()
@@ -58,28 +58,20 @@ class ProductWorker(
                     Log.e(
                         TAG, "12"
                     )
-//                    if (numericPrice.toDouble() <= product.expectedPrice.toDouble()) {
-//                        makeStatusNotification(
-//                            "${product.productName} price alter",
-//                            applicationContext
-//                        )
-//                    }
-//                    product.currentPrice = numericPrice
-//                    println(product.currentPrice + " is new price for " + product.productId)
-//                    productDao.insertProduct(product)
-                } catch (e: Exception) {
-                    print(e.printStackTrace())
-                }
-                makeStatusNotification(
+                    if (numericPrice.toDouble() <= product.expectedPrice.toDouble()) {
+                        makeStatusNotification(
                             "${product.productName} price alter",
                             applicationContext
                         )
-
-
+                    }
+                    product.currentPrice = numericPrice
+                    println(product.currentPrice + " is new price for " + product.productId)
+                    productDao.insertProduct(product)
+                } catch (e: Exception) {
+                    print(e.printStackTrace())
+                }
             }
-            Log.e(
-                TAG, "succ"
-            )
+            println("sc")
             Result.success()
         } catch (throwable: Throwable) {
             Result.failure()

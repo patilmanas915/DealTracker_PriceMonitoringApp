@@ -33,6 +33,10 @@ fun SetupNavigation(
         composable(route = Screen.S3.route) {
             Screen3(Modifier, navHostController,viewModel1)
         }
+        composable("product") {
+            Screen4(modifier = Modifier, navHostController = navHostController,url ="SMSSPRODUCT", screen4ViewModel =viewModel )
+
+        }
         composable(
             route = "product/{my_param}",
             arguments = listOf(
@@ -45,12 +49,13 @@ fun SetupNavigation(
             Screen4(modifier = Modifier, navHostController = navHostController,url = param, screen4ViewModel =viewModel )
         }
         composable(route = "web1") {
-            WebViewScreen(navHostController, "https://www.amazon.in")
+            WebViewScreen(navHostController, "https://www.amazon.in",viewModel)
         }
         composable(route = "web2") {
             WebViewScreen(
                 navHostController,
-                "https://www.flipkart.com/?affid=affveve&affExtParam1=13bdae52e5586f9f690c4763bde90aa9&affExtParam2=99399"
+                "https://www.flipkart.com/",
+                viewModel
             )
         }
         composable(
@@ -64,11 +69,10 @@ fun SetupNavigation(
             val param = it.arguments?.getString("my_param") ?: ""
             WebViewScreen(
                 navHostController,
-                "https://www.flipkart.com/search?q=${param}"
+                "https://www.amazon.in/s?k=${param}",viewModel
             )
 
         }
-
     }
 }
 

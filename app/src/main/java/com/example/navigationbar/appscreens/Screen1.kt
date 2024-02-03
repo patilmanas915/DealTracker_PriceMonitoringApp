@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.compose.LottieAnimation
@@ -70,7 +71,7 @@ fun Screen1(modifier: Modifier = Modifier, navHostController: NavHostController)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Surface(Modifier.weight(8f), color = Color.Transparent) {
                     Text(
-                        text = "HEY! What do you want to Track",
+                        text = "HEY! WELCOME TO DEALCRAKER",
                         fontSize = 30.sp,
                         fontFamily = FontFamily(Font(R.font.poppins)),
                         fontWeight = FontWeight(100),
@@ -95,22 +96,58 @@ fun Screen1(modifier: Modifier = Modifier, navHostController: NavHostController)
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 item {
-                    mobile?.let { CardProduct(img = it, name = "MOBILE") }
+                    mobile?.let {
+                        CardProduct(
+                            img = it,
+                            name = "MOBILE",
+                            navHostController = navHostController
+                        )
+                    }
                 }
                 item {
-                    laptop?.let { CardProduct(img = it, name = "LAPTOP") }
+                    laptop?.let {
+                        CardProduct(
+                            img = it,
+                            name = "LAPTOP",
+                            navHostController = navHostController
+                        )
+                    }
                 }
                 item {
-                    fashion?.let { CardProduct(img = it, name = "FASHION") }
+                    fashion?.let {
+                        CardProduct(
+                            img = it,
+                            name = "FASHION",
+                            navHostController = navHostController
+                        )
+                    }
                 }
                 item {
-                    book?.let { CardProduct(img = it, name = "BOOKS") }
+                    book?.let {
+                        CardProduct(
+                            img = it,
+                            name = "BOOKS",
+                            navHostController = navHostController
+                        )
+                    }
                 }
                 item {
-                    homekit?.let { CardProduct(img = it, name = "HOME & KITCHEN") }
+                    homekit?.let {
+                        CardProduct(
+                            img = it,
+                            name = "HOME & KITCHEN",
+                            navHostController = navHostController
+                        )
+                    }
                 }
                 item {
-                    grocery?.let { CardProduct(img = it, name = "GROCERY") }
+                    grocery?.let {
+                        CardProduct(
+                            img = it,
+                            name = "GROCERY",
+                            navHostController = navHostController
+                        )
+                    }
                 }
 
 
@@ -127,9 +164,17 @@ fun Screen1(modifier: Modifier = Modifier, navHostController: NavHostController)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardProduct(modifier: Modifier = Modifier, img: LottieComposition, name: String) {
+fun CardProduct(
+    modifier: Modifier = Modifier,
+    img: LottieComposition,
+    name: String,
+    navHostController: NavHostController
+) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        OutlinedCard(onClick = {},
+        OutlinedCard(
+            onClick = {
+                navHostController.navigate("sch/${name}",navOptions = NavOptions.Builder().setLaunchSingleTop(true).build())
+            },
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 8.dp,
             )
@@ -158,7 +203,7 @@ fun CardProduct(modifier: Modifier = Modifier, img: LottieComposition, name: Str
 
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, uiMode = 2)
 @Composable
 fun GreetingPreview() {
     NavigationbarTheme {

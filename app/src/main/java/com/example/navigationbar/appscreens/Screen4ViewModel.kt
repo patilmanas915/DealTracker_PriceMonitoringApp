@@ -12,6 +12,7 @@ import com.example.navigationbar.database.ProductEvents
 import com.example.navigationbar.database.ProductsDatabase
 import com.example.navigationbar.network.callApi
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,6 +39,24 @@ class Screen4ViewModel(
         }
     }
 
+    fun isProductUrl(url: String, onComplete: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val response = callApi(url)
+                val jsonObject = response?.let { JSONObject(it) }
+                val compare = jsonObject?.getString("name")
+                if (compare == "null") {
+                    onComplete(false)
+                } else
+                    onComplete(response != null)
+            } catch (e: Exception) {
+                // Handle exceptions, e.g., network errors
+                e.printStackTrace()
+                onComplete(false)
+            }
+        }
+    }
+
 
     private val _uiState = MutableStateFlow(ProductState())
     val uiState: StateFlow<ProductState> = _uiState.asStateFlow()
@@ -45,7 +64,6 @@ class Screen4ViewModel(
         viewModelScope.launch {
             try {
                 val result = callApi(url)
-                println(result)
                 val jsonObject = JSONObject(result)
                 val imageUrl = jsonObject.getString("images")
                 val price = jsonObject.getString("price")
@@ -55,9 +73,7 @@ class Screen4ViewModel(
                 var description: String = ""
                 if (jsonObject.has("about_item")) {
                     description = jsonObject.getString("about_item")
-                    // Use the aboutItem value as needed
                 } else {
-                    // Key doesn't exist, handle the absence of the key (provide a default value or take appropriate action)
                     description = jsonObject.getString("highlights")
                 }
                 _uiState.value = ProductState(
@@ -67,6 +83,7 @@ class Screen4ViewModel(
                     productDescription = description,
                     productUrl = url
                 )
+                println(url)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

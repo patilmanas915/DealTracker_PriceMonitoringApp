@@ -31,6 +31,7 @@ import com.example.navigationbar.appscreens.Screen4ViewModel
 import com.example.navigationbar.database.ProductsDatabase
 import com.example.navigationbar.navigationsystem.SetupNavigation
 import com.example.navigationbar.notificationandworkmanager.ProductWorker
+import com.example.navigationbar.notificationandworkmanager.makeStatusNotification
 import com.example.navigationbar.ui.theme.NavigationbarTheme
 import com.google.gson.Gson
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -44,11 +45,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val workRequest = PeriodicWorkRequestBuilder<ProductWorker>(
-            repeatInterval = 20,
-            repeatIntervalTimeUnit = TimeUnit.SECONDS
+            repeatInterval = 15,
+            repeatIntervalTimeUnit = TimeUnit.MINUTES
         )
             .build()
         WorkManager.getInstance(applicationContext).enqueue(workRequest)
+        makeStatusNotification("Tracking is started", applicationContext)
+
 
         val db by lazy {
             Room.databaseBuilder(applicationContext, ProductsDatabase::class.java, "products.db")

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
@@ -151,7 +152,23 @@ fun Screen5(modifier: Modifier, navHostController: NavHostController) {
 
                     )
                 }
+                Spacer(modifier = Modifier.padding(12.dp))
 
+                Surface(
+                    onClick = { navHostController.navigate(
+                        "product",
+                        navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
+                    ) },
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.android_superhero1),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.size(76.dp)
+
+                    )
+                }
 
             }
             Text(

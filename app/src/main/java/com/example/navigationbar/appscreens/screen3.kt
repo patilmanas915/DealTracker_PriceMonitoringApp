@@ -41,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.navigationbar.R
@@ -108,7 +109,8 @@ fun Screen3(
                         monitoringProductsTable = hero,
                         screen3ViewModel,
                         modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        navHostController
                     )
                 }
                 item {
@@ -117,7 +119,8 @@ fun Screen3(
                         onClick = { navHostController.navigate(com.example.navigationbar.navigationsystem.Screen.S2.route) },
                         modifier
                             .fillMaxSize()
-                            .padding(8.dp)) {
+                            .padding(8.dp)
+                    ) {
                         Column(
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally,
@@ -155,7 +158,8 @@ fun Screen3(
 fun Itemsfor(
     monitoringProductsTable: MonitoringProductsTable,
     screen3ViewModel: Screen3ViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController
 ) {
     Card(
         modifier = Modifier
@@ -166,7 +170,9 @@ fun Itemsfor(
             AsyncImage(
                 model = monitoringProductsTable.productImg,
                 contentDescription = null,
-                modifier.size(100.dp).weight(1.8f)
+                modifier
+                    .size(100.dp)
+                    .weight(1.8f)
             )
 
             Column(modifier.weight(4f)) {
@@ -174,7 +180,7 @@ fun Itemsfor(
                 Text(text = "Expected Price: ${monitoringProductsTable.expectedPrice}")
             }
             IconButton(onClick = {
-                                 screen3ViewModel.removeProduct(monitoringProductsTable)
+                screen3ViewModel.removeProduct(monitoringProductsTable)
 
             }, modifier.weight(1f)) {
                 Icon(imageVector = Icons.Default.Close, contentDescription = null)
